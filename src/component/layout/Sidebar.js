@@ -65,7 +65,7 @@ export default function Sidebar() {
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="/register" className="nav-link">
+                            <Link to="/capex" className="nav-link">
                                 <i className="nav-icon fas fa-chart-bar" />
                                 <p>
                                     Capex
@@ -77,6 +77,14 @@ export default function Sidebar() {
                                 <i className="nav-icon fas fa-list-alt" />
                                 <p>
                                     Orders
+                                </p>
+                            </Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/job" className="nav-link">
+                                <i className="nav-icon fas fa-tasks" />
+                                <p>
+                                    Job Approval
                                 </p>
                             </Link>
                         </li>

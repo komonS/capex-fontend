@@ -20,6 +20,7 @@ export default function InputCapex() {
 
     const saveCapex = () => {
         setCapex({
+            capexNo: "",
             classification: classification,
             priority: priority,
             capExp: capExp,
@@ -32,9 +33,22 @@ export default function InputCapex() {
             main: main,
             profix: profix,
             endDate: endDate,
-            startDate: startDate
+            startDate: startDate,
+            status: "Waiting"
         })
     }
+
+    const [priorityData, setPriorityData] = useState([
+        {
+            priorityName: "A"
+        },
+        {
+            priorityName: "B"
+        },
+        {
+            priorityName: "C"
+        }
+    ])
 
 
     return (
@@ -49,7 +63,12 @@ export default function InputCapex() {
                 <div className="col-md-3">
                     <div className="form-group">
                         <label>Priority</label>
-                        <input className="form-control" />
+                        <select className="form-control" onChange={(e) => setPriority(e.target.value)}>
+                            <option value="">-- SELECT --</option>
+                            {priorityData.map((item, index) => (
+                                <option value={item.priorityName}>{item.priorityName}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
                 <div className="col-md-3">

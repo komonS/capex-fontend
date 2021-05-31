@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import DataTable from 'react-data-table-component'
 
 export default function CapexTable() {
-    const [workflow, setWorkflow] = useState([])
     const [title, setTitle] = useState("Capex Table")
-    const [page, setPage] = useState(10)
-    const [perPage, setPerPage] = useState([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    const [page, setPage] = useState(5)
+    const [perPage, setPerPage] = useState([5,10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
     const [column, setColumn] = useState([
         {
             name: 'Capex No.',
@@ -16,28 +15,63 @@ export default function CapexTable() {
             name: 'Capex Name',
             selector: 'capexName',
             sortable: true,
+        },
+        {
+            name: 'Status',
+            selector: 'status',
+            sortable: true,
         }
     ])
     const [capex, setCapex] = useState([
         {
             capexNo:"B-94",
-            capexName:"Test Capex 94"
+            capexName:"Test Capex 94",
+            status:"success"
         },
         {
             capexNo:"B-95",
-            capexName:"Test Capex 95"
+            capexName:"Test Capex 95",
+            status:"success"
         },
         {
             capexNo:"B-96",
-            capexName:"Test Capex 96"
+            capexName:"Test Capex 96",
+            status:"success"
         },
         {
             capexNo:"B-97",
-            capexName:"Test Capex 97"
+            capexName:"Test Capex 97",
+            status:"success"
         },
         {
             capexNo:"B-98",
-            capexName:"Test Capex 98"
+            capexName:"Test Capex 98",
+            status:"success"
+        },
+        {
+            capexNo:"B-99",
+            capexName:"Test Capex 99",
+            status:"inprogress"
+        },
+        {
+            capexNo:"B-100",
+            capexName:"Test Capex 100",
+            status:"inprogress"
+        },
+        {
+            capexNo:"B-101",
+            capexName:"Test Capex 101",
+            status:"inprogress"
+        },
+        {
+            capexNo:"B-102",
+            capexName:"Test Capex 102",
+            status:"inprogress"
+        },
+        {
+            capexNo:"B-103",
+            capexName:"Test Capex 103",
+            status:"inprogress"
         }
     ])
     return (
@@ -63,10 +97,10 @@ export default function CapexTable() {
                     pagination
                     className="table table-hover"
                     fixedHeader={true}
-                    paginationTotalRows={page}
+                    
                     paginationRowsPerPageOptions={perPage}
                     defaultSortAsc={false}
-                    paginationPerPage={15}
+                    paginationPerPage={page}
 
                 />
             </div>

@@ -7,6 +7,9 @@ import './App.css'
 import Footer from './component/layout/Footer';
 import Login from './component/content/Login';
 import Orders from './component/content/Orders';
+import Capex from './component/content/Capex';
+import CapexConfirm from './component/content/CapexConfirm';
+import Job from './component/content/Job';
 export default function App() {
   return (
     <div class="wrapper">
@@ -17,6 +20,9 @@ export default function App() {
         <section class="content">
           <div class="container-fluid">
             <Switch>
+              <Route path="/job" component={Job} />
+              <Route path="/capex/confirm" component={CapexConfirm} />
+              <Route path="/capex" component={Capex} />
               <Route path="/orders" component={Orders} />
               <Route path="/login" component={Login} />
               <Route path="/" component={Home} />

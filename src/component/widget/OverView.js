@@ -19,24 +19,24 @@ export default function OverView() {
             <div className="card-body">
                 <div className="box-info">
                     <div className="progress-group">
-                        Approved
+                        Total
                         <span className="float-right"><b>10</b></span>
                         <div className="progress progress-sm">
-                            <div className="progress-bar bg-success" style={{ width: '80%' }} />
+                            <div className="progress-bar bg-info" style={{ width: '100%' }} />
                         </div>
                     </div>
                     <div className="progress-group">
-                        Reject
-                        <span className="float-right"><b>10</b></span>
+                        Success
+                        <span className="float-right"><b>5</b></span>
                         <div className="progress progress-sm">
-                            <div className="progress-bar bg-danger" style={{ width: '60%' }} />
+                            <div className="progress-bar bg-success" style={{ width: '50%' }} />
                         </div>
                     </div>
                     <div className="progress-group">
-                        Rework
-                        <span className="float-right"><b>1</b></span>
+                        Inprogress
+                        <span className="float-right"><b>5</b></span>
                         <div className="progress progress-sm">
-                            <div className="progress-bar bg-warning" style={{ width: '5%' }} />
+                            <div className="progress-bar bg-warning" style={{ width: '50%' }} />
                         </div>
                     </div>
                 </div>

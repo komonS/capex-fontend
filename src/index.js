@@ -8,22 +8,25 @@ import { MenuProvider } from './store/MenuProvider';
 import { LoginProvider } from './store/LoginProvider'
 import { UrlProvider } from './store/UrlProvider'
 import { UserProvider } from './store/UserProvider'
-import {CapexProvider} from './store/CapexProvider'
+import { CapexProvider } from './store/CapexProvider'
+import { ConfirmProvider } from './store/ConfirmProvider';
 ReactDOM.render(
   <React.StrictMode>
-    <CapexProvider>
-      <UserProvider>
-        <UrlProvider>
-          <LoginProvider>
-            <MenuProvider>
-              <Router>
-                <App />
-              </Router>
-            </MenuProvider>
-          </LoginProvider>
-        </UrlProvider>
-      </UserProvider>
-    </CapexProvider>
+    <ConfirmProvider>
+      <CapexProvider>
+        <UserProvider>
+          <UrlProvider>
+            <LoginProvider>
+              <MenuProvider>
+                <Router>
+                  <App />
+                </Router>
+              </MenuProvider>
+            </LoginProvider>
+          </UrlProvider>
+        </UserProvider>
+      </CapexProvider>
+    </ConfirmProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
