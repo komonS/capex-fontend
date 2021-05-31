@@ -3,10 +3,27 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import { HashRouter as Router } from "react-router-dom";
+import { MenuProvider } from './store/MenuProvider';
+import { LoginProvider } from './store/LoginProvider'
+import { UrlProvider } from './store/UrlProvider'
+import { UserProvider } from './store/UserProvider'
+import {CapexProvider} from './store/CapexProvider'
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <CapexProvider>
+      <UserProvider>
+        <UrlProvider>
+          <LoginProvider>
+            <MenuProvider>
+              <Router>
+                <App />
+              </Router>
+            </MenuProvider>
+          </LoginProvider>
+        </UrlProvider>
+      </UserProvider>
+    </CapexProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

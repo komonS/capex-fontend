@@ -1,0 +1,49 @@
+.bg-blue{
+    background-color: #00ABE1;
+}
+
+.text-brand{
+    color: #09e088;
+    font-weight: bold;
+    -webkit-text-stroke: 1px white;
+}
+
+.box-center{
+   padding-top: 10%;
+   /* background-color: white; */
+}
+
+.box-top-magin{
+    padding-top: 20px;
+}
+
+.box-content{
+    display: flex;
+    justify-content: center;
+}
+
+.box-border{
+    margin-bottom: 10px;
+    border: solid 1px #C4C4C4;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.box-inner-line{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.box-info{
+    padding: 10px;
+}
+
+.info-box:hover{
+   opacity: 0.5;
+}
+.info-box:link{
+    color: inherit;
+ }
+
