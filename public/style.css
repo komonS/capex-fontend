@@ -53,6 +53,16 @@
  .margin-10{
     margin-top: 10;
  }
+
+ .box-header{
+     padding: 10px;
+     background-color: #00ABE1;
+     opacity: 2;
+ }
+
+ .box-capex-view{
+     padding: 10px;
+ }
  
  
 

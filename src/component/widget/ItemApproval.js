@@ -1,40 +1,54 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import DataTable from 'react-data-table-component'
+import ContentHeader from '../widget/ContentHeader'
+import { ConfirmContext } from '../../store/ConfirmProvider'
+import { Link } from 'react-router-dom'
 
 export default function ItemApproval() {
 
-    const [title, setTitle] = useState("Workflow Table")
+    const { confirm, setConfirm } = useContext(ConfirmContext)
+
+
+    const [title, setTitle] = useState("Job Approval")
     const [page, setPage] = useState(10)
     const [perPage, setPerPage] = useState([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
     const [column, setColumn] = useState([
         {
-            name: 'Workflow ID',
-            selector: 'workflowID',
+            name: 'Classification',
+            selector: 'classification',
             sortable: true,
         },
         {
-            name: 'Workflow Name',
-            selector: 'workflowName',
+            name: 'Priority',
+            selector: 'priority',
             sortable: true,
         },
         {
-            name: 'Owner',
-            selector: 'owner',
+            name: 'Capital Expenditure Item',
+            selector: 'capExp',
+            sortable: true,
+        },
+        {
+            name: 'Division',
+            selector: 'priority',
             sortable: true,
         },
         {
             name: 'Status',
-            selector: 'workflowStatusName',
+            selector: 'status',
             sortable: true,
-        }
+        },
+        {
+            name: 'View',
+            sortable: true,
+            cell: row => <Link to="/approve/view/1"><button className="btn btn-info">View</button></Link>,
+        },
     ])
-    const [item, setItem] = useState([
-
-    ])
+    const [job, setJob] = useState([])
     return (
         <div className="card direct-chat direct-chat-primary">
             <div className="card-header">
-                <h3 className="card-title">Item Approval</h3>
+                <h3 className="card-title">Job Approval</h3>
                 <div className="card-tools">
 
                     <button type="button" className="btn btn-tool" data-card-widget="collapse">
@@ -48,9 +62,9 @@ export default function ItemApproval() {
             {/* /.card-header */}
             <div className="card-body">
                 <DataTable
-                    title="Item capex wating approving"
+                    title={title}
                     columns={column}
-                    data={item}
+                    data={confirm}
                     pagination
                     className="table table-hover"
                     fixedHeader={true}

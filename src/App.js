@@ -10,6 +10,8 @@ import Orders from './component/content/Orders';
 import Capex from './component/content/Capex';
 import CapexConfirm from './component/content/CapexConfirm';
 import Job from './component/content/Job';
+import CapexView from './component/content/CapexView';
+import ApprovalView from './component/content/ApprovalView';
 export default function App() {
   return (
     <div class="wrapper">
@@ -20,6 +22,8 @@ export default function App() {
         <section class="content">
           <div class="container-fluid">
             <Switch>
+              <Route path="/approve/view/:capexID" component={ApprovalView} />
+              <Route path="/capex/view/:capexID" component={CapexView} />
               <Route path="/job" component={Job} />
               <Route path="/capex/confirm" component={CapexConfirm} />
               <Route path="/capex" component={Capex} />

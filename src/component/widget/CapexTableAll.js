@@ -38,7 +38,7 @@ export default function CapexTableAll() {
         {
             name: 'View',
             sortable: true,
-            cell: row => <Link to="/capex/view"><button className="btn btn-info">View</button></Link>,
+            cell: row => <Link to="/capex/view/1"><button className="btn btn-info">View</button></Link>,
         },
     ])
     

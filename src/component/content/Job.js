@@ -39,7 +39,7 @@ export default function Job() {
         {
             name: 'View',
             sortable: true,
-            cell: row => <Link to="/capex/view"><button className="btn btn-info">View</button></Link>,
+            cell: row => <Link to="/approve/view/1"><button className="btn btn-info">View</button></Link>,
         },
     ])
     const [job, setJob] = useState([])
