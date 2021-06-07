@@ -1,17 +1,28 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+/* data table component */
 import DataTable from 'react-data-table-component'
+import DataTableExtensions from 'react-data-table-component-extensions';
+import 'react-data-table-component-extensions/dist/index.css';
+
 import ContentHeader from '../widget/ContentHeader'
 import { CapexContext } from '../../store/CapexProvider'
 import { Link } from 'react-router-dom'
 import { ConfirmContext } from '../../store/ConfirmProvider'
+import { UrlContext } from '../../store/UrlProvider'
+import { UserContext } from '../../store/UserProvider'
+import axios from 'axios'
 
 export default function Capex() {
-    const { capex, setCapex } = useContext(CapexContext)
-    const { confirm, setConfirm } = useContext(ConfirmContext)
+    const { user } = useContext(UserContext)
+    const { url } = useContext(UrlContext)
+    // const { capex, setCapex } = useContext(CapexContext)
+    const { confirm, setConfirm, setUnConfirm } = useContext(ConfirmContext)
+
+    const [capex, setCapex] = useState([])
 
     const [title, setTitle] = useState("Create capex table")
-    const [page, setPage] = useState(10)
-    const [perPage, setPerPage] = useState([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    const [page, setPage] = useState(15)
+    const [perPage, setPerPage] = useState([10, 15, 20, 30, 40, 50, 60, 70, 80, 90, 100])
     const [column, setColumn] = useState([
         {
             name: 'Select',
@@ -21,38 +32,60 @@ export default function Capex() {
         },
         {
             name: 'Classification',
-            selector: 'classification',
+            selector: 'classificationName',
             sortable: true,
         },
         {
             name: 'Priority',
-            selector: 'priority',
+            selector: 'priorityName',
             sortable: true,
         },
         {
             name: 'Capital Expenditure Item',
-            selector: 'capExp',
+            selector: 'expectation',
+            sortable: true,
+        },
+        {
+            name: 'Capex Year',
+            selector: 'capexYear',
             sortable: true,
         },
         {
             name: 'Division',
-            selector: 'priority',
+            selector: 'division',
             sortable: true,
         },
         {
             name: 'Status',
-            selector: 'status',
+            selector: 'capexStatusName',
             sortable: true,
         },
         {
             name: 'View',
             sortable: true,
-            cell: row => <Link to="/capex/view/1"><button className="btn btn-info">View</button></Link>,
+            cell: row => <Link to={"/capex/view/" + row.capexID}><button className="btn btn-info">View</button></Link>,
         },
     ])
 
-    const onCheckIn = (data) => {
-        setConfirm(data)
+    const onCheckIn = (data, e) => {
+        if (e.target.checked === true) {
+            setConfirm(data)
+        } else {
+            setUnConfirm(data.capexID)
+        }
+
+        //setConfirm(data)
+    }
+
+    const getData = async () => {
+        let res = await axios.get(url + "capex/capex", {
+            params: {
+                status: "division",
+                division: user.devision
+            }
+        })
+        //console.log(res.data)
+        setCapex(res.data)
     }
 
     const CheckBox = (props) => {
@@ -60,7 +93,7 @@ export default function Capex() {
             <div className="form-group checkbox">
                 <div className="form-check">
                     <label className="form-check-label">
-                        <input type="checkbox" className="form-check-input" onClick={() => onCheckIn(props.data)} />&nbsp;
+                        <input type="checkbox" className="form-check-input" onChange={(e) => onCheckIn(props.data, e)} />&nbsp;
                     </label>
                 </div>
             </div>
@@ -68,22 +101,34 @@ export default function Capex() {
     }
 
 
+    useEffect(() => {
+        getData()
+
+    }, [])
+
+
     return (
         <div>
             <ContentHeader name="Capex" />
             <div>
-                <DataTable
-                    title={title}
+                <DataTableExtensions
                     columns={column}
                     data={capex}
-                    pagination
-                    className="table table-hover"
-                    fixedHeader={true}
-                    paginationTotalRows={page}
-                    paginationRowsPerPageOptions={perPage}
-                    defaultSortAsc={false}
-                    paginationPerPage={15}
-                />
+                    export={false}
+                    print={false}
+                    filterPlaceholder="search"
+
+                >
+                    <DataTable
+                        highlightOnHover
+                        noHeader
+                        className="table table-hover"
+                        fixedHeader={true}
+                        pagination={true}
+                        paginationPerPage={10}
+                        paginationRowsPerPageOptions={perPage}
+                    />
+                </DataTableExtensions>
             </div>
             <div className="text-center margin-10">
                 <Link to="/capex/confirm">

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import Home from './component/content/Home'
 import Header from './component/layout/Header'
 import Sidebar from './component/layout/Sidebar'
@@ -12,7 +12,34 @@ import CapexConfirm from './component/content/CapexConfirm';
 import Job from './component/content/Job';
 import CapexView from './component/content/CapexView';
 import ApprovalView from './component/content/ApprovalView';
+import { UserContext } from './store/UserProvider'
+import { UrlContext } from './store/UrlProvider'
+import { LoginContext } from './store/LoginProvider'
+import axios from 'axios';
+import Logout from './component/widget/Logout';
 export default function App() {
+  const { url, ldap } = useContext(UrlContext)
+  const { user, setUser } = useContext(UserContext)
+  const { login, setLogin } = useContext(LoginContext)
+
+  const setData = async () => {
+    if (localStorage.userID != null) {
+      let userinfo = await axios.get(ldap + 'data/userinfo', {
+        params: {
+          userID: localStorage.userID
+        }
+      })
+      console.log(userinfo.data)
+      setUser(userinfo.data)
+      setLogin(true)
+    }
+
+  }
+
+  useEffect(() => {
+    setData()
+
+  }, [])
   return (
     <div class="wrapper">
       <Header />
@@ -22,7 +49,7 @@ export default function App() {
         <section class="content">
           <div class="container-fluid">
             <Switch>
-              <Route path="/approve/view/:capexID" component={ApprovalView} />
+              <Route path="/approve/view/:flowID" component={ApprovalView} />
               <Route path="/capex/view/:capexID" component={CapexView} />
               <Route path="/job" component={Job} />
               <Route path="/capex/confirm" component={CapexConfirm} />
@@ -35,7 +62,7 @@ export default function App() {
         </section>
       </div>
       <Footer />
-
+      <Logout />
 
     </div>
   )

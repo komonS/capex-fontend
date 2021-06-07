@@ -3,12 +3,12 @@ export const UrlContext = createContext({})
 
 
 const initialState = {
-    url:"",
-    ldap:"",
+    url:"http://localhost/capex-api/api/",
+    ldap:"http://sciintra/sci-api/ldap/api/",
     host:"",
     url_pm:"",
     host_pm:"",
-    flow:""
+    flow:"http://localhost/workflow/api/"
 }
 
 

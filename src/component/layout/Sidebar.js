@@ -6,27 +6,9 @@ import { LoginContext } from '../../store/LoginProvider'
 import { UserContext } from '../../store/UserProvider'
 import { UrlContext } from '../../store/UrlProvider'
 export default function Sidebar() {
-    const { login, setLogin } = useContext(LoginContext)
-    const { url, ldap } = useContext(UrlContext)
     const { user, setUser } = useContext(UserContext)
+    const { login, setLogin } = useContext(LoginContext)
 
-    const setData = async () => {
-        if (localStorage.userID != null) {
-            let userinfo = await axios.get(ldap + 'data/userinfo', {
-                params: {
-                    userID: localStorage.userID
-                }
-            })
-            setUser(userinfo.data)
-            setLogin(true)
-        }
-
-    }
-
-    useEffect(() => {
-        setData()
-
-    }, [])
 
 
     return (
@@ -47,7 +29,7 @@ export default function Sidebar() {
                     </div> : null}
 
                     <div className="info">
-                        {login ? <a href="#" className="d-block">{localStorage.userID}</a> : <Link to="/login">Login</Link>}
+                        {login ? <a href="#" className="d-block" data-toggle="modal" data-target="#logout" >{user.fullname +" : "+user.devision}</a> : <Link to="/login">Login</Link>}
 
                     </div>
                 </div>

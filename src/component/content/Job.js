@@ -1,10 +1,13 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
 import ContentHeader from '../widget/ContentHeader'
 import { ConfirmContext } from '../../store/ConfirmProvider'
+import { UrlContext } from '../../store/UrlProvider'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 export default function Job() {
     const { confirm, setConfirm } = useContext(ConfirmContext)
+    const { flow, url } = useContext(UrlContext)
 
 
     const [title, setTitle] = useState("Job Approval")
@@ -12,37 +15,41 @@ export default function Job() {
     const [perPage, setPerPage] = useState([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
     const [column, setColumn] = useState([
         {
-            name: 'Classification',
-            selector: 'classification',
+            name: 'Requester',
+            selector: 'requester',
             sortable: true,
         },
         {
-            name: 'Priority',
-            selector: 'priority',
+            name: 'Workflow Name',
+            selector: 'workflowName',
             sortable: true,
         },
         {
-            name: 'Capital Expenditure Item',
-            selector: 'capExp',
-            sortable: true,
-        },
-        {
-            name: 'Division',
-            selector: 'priority',
-            sortable: true,
-        },
-        {
-            name: 'Status',
-            selector: 'status',
+            name: 'Workflow Step',
+            selector: 'workflowStepName',
             sortable: true,
         },
         {
             name: 'View',
             sortable: true,
-            cell: row => <Link to="/approve/view/1"><button className="btn btn-info">View</button></Link>,
+            cell: row => <Link to={"/approve/view/" + row.flowID}><button className="btn btn-info">View</button></Link>,
         },
     ])
     const [job, setJob] = useState([])
+
+    const getJob = async () => {
+        let res = await axios.get(flow + "job/job", {
+            params: {
+                userID: localStorage.userID
+            }
+        })
+        setJob(res.data)
+    }
+
+    useEffect(() => {
+        getJob()
+
+    }, [])
     return (
         <div>
             <ContentHeader name="Job Approval" />
@@ -50,7 +57,7 @@ export default function Job() {
                 <DataTable
                     title={title}
                     columns={column}
-                    data={confirm}
+                    data={job}
                     pagination
                     className="table table-hover"
                     fixedHeader={true}

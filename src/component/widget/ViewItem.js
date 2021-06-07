@@ -1,23 +1,74 @@
-import React, { useState } from 'react'
+import axios from 'axios'
+import React, { useContext, useEffect, useState } from 'react'
+import { UrlContext } from '../../store/UrlProvider'
 import ContentHeader from '../widget/ContentHeader'
 
-export default function ViewItem() {
-    const [no, setNo] = useState("B-94")
-    const [classification, setClassification] = useState("Test Project")
-    const [priority, setPriority] = useState("A")
-    const [capExp, setCapExp] = useState("test")
-    const [total, setTotal] = useState(100)
-    const [firstPlan, setFirstPlan] = useState(50)
-    const [secordPlan, setSecordPlan] = useState(50)
-    const [fullYear, setFullYear] = useState(100)
+export default function ViewItem(props) {
+    const { url, flow } = useContext(UrlContext)
+    const [no, setNo] = useState("")
+    const [classification, setClassification] = useState("")
+    const [priority, setPriority] = useState("")
+    const [capExp, setCapExp] = useState("")
+    const [total, setTotal] = useState(0)
+    const [firstPlan, setFirstPlan] = useState(0)
+    const [secordPlan, setSecordPlan] = useState(0)
+    const [fullYear, setFullYear] = useState(0)
     const [defer, setDefer] = useState("")
-    const [goal, setGoal] = useState("test")
-    const [main, setMain] = useState("test")
-    const [profix, setProfix] = useState("test")
-    const [endDate, setEndDate] = useState("2021-05-31")
-    const [startDate, setStartDate] = useState("2021-05-31")
-    const [division, setDivision] = useState("IT")
-    const [status, setStatus] = useState("success")
+    const [goal, setGoal] = useState("")
+    const [main, setMain] = useState("")
+    const [profix, setProfix] = useState("")
+    const [endDate, setEndDate] = useState("")
+    const [startDate, setStartDate] = useState("")
+    const [division, setDivision] = useState("")
+    const [status, setStatus] = useState("")
+
+    const getData = async (capexID, flowID) => {
+        console.log("capexID : " + capexID)
+        console.log("flowID : " + flowID)
+        let res
+        if (capexID != undefined) {
+            res = await axios.get(url + "capex/capex", {
+                params: {
+                    status: "one",
+                    capexID: capexID
+                }
+
+            })
+        } else {
+            res = await axios.get(url + "capex/capex", {
+                params: {
+                    status: "flow",
+                    flowID: flowID
+                }
+
+            })
+        }
+
+
+        console.log(res.data)
+        if (res.data.length > 0) {
+            setNo(res.data[0].capexNo)
+            setPriority(res.data[0].priorityName)
+            setClassification(res.data[0].classificationName)
+            setCapExp(res.data[0].capexName)
+            setDivision(res.data[0].division)
+            setTotal(res.data[0].totalPlan)
+            setFirstPlan(res.data[0].h1Plan)
+            setSecordPlan(res.data[0].h2Plan)
+            setFullYear(res.data[0].h1Plan + res.data[0].h2Plan)
+            setGoal(res.data[0].goal)
+            setMain(res.data[0].mainComponents)
+            setProfix(res.data[0].expectation)
+            setStatus(res.data[0].capexStatusName)
+            //setStartDate(res.data[0].)
+        }
+
+    }
+
+    useEffect(() => {
+        getData(props.capexID, props.flowID)
+
+    }, [props.capexID, props.flowID])
     return (
         <div className="row">
             <div className="col-md-6">

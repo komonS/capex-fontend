@@ -9,39 +9,43 @@ export default function CapexTableAll() {
     const [page, setPage] = useState(10)
     const [perPage, setPerPage] = useState([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
     const [column, setColumn] = useState([
-        
         {
             name: 'Classification',
-            selector: 'classification',
+            selector: 'classificationName',
             sortable: true,
         },
         {
             name: 'Priority',
-            selector: 'priority',
+            selector: 'priorityName',
             sortable: true,
         },
         {
             name: 'Capital Expenditure Item',
-            selector: 'capExp',
+            selector: 'expectation',
+            sortable: true,
+        },
+        {
+            name: 'Capex Year',
+            selector: 'capexYear',
             sortable: true,
         },
         {
             name: 'Division',
-            selector: 'priority',
+            selector: 'division',
             sortable: true,
         },
         {
             name: 'Status',
-            selector: 'status',
+            selector: 'capexStatusName',
             sortable: true,
         },
         {
             name: 'View',
             sortable: true,
-            cell: row => <Link to="/capex/view/1"><button className="btn btn-info">View</button></Link>,
+            cell: row => <Link to={"/capex/view/" + row.capexID}><button className="btn btn-info">View</button></Link>,
         },
     ])
-    
+
     return (
         <div className="card direct-chat direct-chat-primary">
             <div className="card-header">
@@ -59,9 +63,10 @@ export default function CapexTableAll() {
             {/* /.card-header */}
             <div className="card-body">
                 <DataTable
-                    title={title}
                     columns={column}
                     data={capex}
+                    highlightOnHover
+                    noHeader
                     pagination
                     className="table table-hover"
                     fixedHeader={true}
