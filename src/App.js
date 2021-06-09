@@ -17,6 +17,8 @@ import { UrlContext } from './store/UrlProvider'
 import { LoginContext } from './store/LoginProvider'
 import axios from 'axios';
 import Logout from './component/widget/Logout';
+import Workflow from './component/content/Workflow';
+import CapexEdit from './component/content/CapexEdit';
 export default function App() {
   const { url, ldap } = useContext(UrlContext)
   const { user, setUser } = useContext(UserContext)
@@ -49,6 +51,8 @@ export default function App() {
         <section class="content">
           <div class="container-fluid">
             <Switch>
+              <Route path="/capex/edit/:capexID/:flowID" component={CapexEdit} />
+              <Route path="/workflow" component={Workflow} />
               <Route path="/approve/view/:flowID" component={ApprovalView} />
               <Route path="/capex/view/:capexID" component={CapexView} />
               <Route path="/job" component={Job} />

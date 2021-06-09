@@ -10,7 +10,7 @@ export default function ApprovalView() {
         <div>
             <ContentHeader name="Capex View" />
             <ViewItem flowID={flowID} />
-            <ApprovalItem />
+            <ApprovalItem flowID={flowID} />
         </div>
     )
 }
