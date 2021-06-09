@@ -1,11 +1,21 @@
 import React, { useContext } from 'react'
+import { useHistory } from 'react-router'
 import { LoginContext } from '../../store/LoginProvider'
-
+import { UserContext } from '../../store/UserProvider'
 export default function Logout() {
+    const history = useHistory()
     const { login, setLogin } = useContext(LoginContext)
+    const { user, setUser } = useContext(UserContext)
     const onLogout = () => {
         setLogin(false)
+        setUser({
+            title: '',
+            fullname: '',
+            devision: '',
+            manager: '',
+        })
         localStorage.clear()
+        history.push('/login')
     }
     return (
         <div className="modal fade" id="logout">
@@ -22,7 +32,7 @@ export default function Logout() {
                             <p>
                                 You need to logout
                             </p>
-                            <button className="btn btn-warning btn-lg" onClick={() => onLogout()}>Logout</button>
+                            <button className="btn btn-warning btn-lg" data-dismiss="modal" onClick={() => onLogout()}>Logout</button>
                         </div>
 
                     </div>

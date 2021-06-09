@@ -23,6 +23,17 @@ export default function ApprovalItem(props) {
         console.log(res.data)
     }
 
+    const getFlowStatus = async (flowID) => {
+        let res = await axios.get(flow + "flow/flow", {
+            params: {
+                status: 3,
+                flowID: flowID
+            }
+        })
+
+        return res.data[0]
+    }
+
     const onSubmit = async () => {
         let res = await axios.post(flow + "approval/changestatus", {
             flowID: props.flowID,
@@ -31,12 +42,40 @@ export default function ApprovalItem(props) {
             comment: comment
         })
         console.log(res.data)
-        if (res.data.status) {
-            alert(res.data.detail)
+        if (res.data.status == "success") {
+            let flow = await getFlowStatus(props.flowID)
+            let st = await changeStatus(props.flowID, flow.flowStatusName)
+            if (st.status == "success") {
+                if(flow.flowStatusName == "success"){
+
+                }
+                alert(res.data.detail)
+            } else {
+                alert(st.data.detail)
+            }
+
         } else {
             alert(res.data.detail)
         }
     }
+
+
+    const changeStatus = async (flowID, flowStatus) => {
+        let res = await axios.put(url + "capexflow/capexflow", {
+            flowID: flowID,
+            flowStatus: flowStatus
+        })
+
+        return res.data
+    }
+
+    const genCapexNo = async () => {
+        let res = await axios.post(url+"",{
+            
+        })
+    }
+
+
 
     useEffect(() => {
         getApprovalData(props.flowID)

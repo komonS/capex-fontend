@@ -20,6 +20,11 @@ export default function CapexConfirm() {
     const [perPage, setPerPage] = useState([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
     const [column, setColumn] = useState([
         {
+            name: 'CapexID',
+            selector: 'capexID',
+            sortable: true,
+        },
+        {
             name: 'Classification',
             selector: 'classificationName',
             sortable: true,
@@ -62,6 +67,9 @@ export default function CapexConfirm() {
     ])
 
     const [approval, setApproval] = useState([])
+    const [flowID, setFlowID] = useState(0)
+    const [flowStatus, setFlowStatus] = useState("")
+
 
 
     const getApproval = async () => {
@@ -78,6 +86,43 @@ export default function CapexConfirm() {
 
 
     const onSubmit = async () => {
+        confirm.forEach(async (item) => {
+            //console.log(item.capexID)
+            let createStatus = await createFlow()
+            console.log(createStatus)
+            if (createStatus.status === "success") {
+                let approvalStatus = await createApproval(createStatus.flowID)
+                console.log(approvalStatus)
+                if (approvalStatus.status === "success") {
+                    let startFlowStatus = await startFlow(createStatus.flowID)
+                    console.log(startFlowStatus)
+                    if (approvalStatus.status !== "success") {
+                        alert(startFlowStatus.detail)
+                    } else {
+                        let flow = await getFlowStatus(createStatus.flowID)
+                        let createflow = await createCapexFlow(createStatus.flowID, flow.flowStatusName)
+                        let createfd = await createCapexFlowDetail(item.capexID, createflow.capexFlowID)
+
+                        if (createfd.status !== "success") {
+                            alert(createfd.detail)
+                        }
+                    }
+                } else {
+                    alert(approvalStatus.detail)
+                }
+            } else {
+                alert(createStatus.detail)
+            }
+        });
+
+        clearConfirm()
+        alert("create flow and approval complated, please checking in workflow")
+
+        //console.log(sd + " : " + ed)
+    }
+
+    const createFlow = async () => {
+
         let sd = moment().format("YYYY-MM-DD")
         let ed = moment().add(30, 'd').format("YYYY-MM-DD")
         let res = await axios.post(flow + "flow/create", {
@@ -86,35 +131,69 @@ export default function CapexConfirm() {
             end: ed,
             requester: localStorage.userID
         })
-        console.log("create flow")
-        console.log(res.data)
-        if (res.data.status === "success") {
-            let res2 = await axios.post(flow + "approval/create", {
-                flowID: res.data.flowID,
-                approval: approval
-            })
-            console.log("create approval")
-            console.log(res2.data)
-            if (res2.data.status === "success") {
-                let res3 = await axios.post(flow + "flow/startflow", {
-                    flowID: res.data.flowID
-                })
-                console.log("start flow")
-                console.log(res3.data)
-                if (res3.data.status === "success") {
-                    clearConfirm()
-                    alert("create flow and approval complated, please checking in workflow")
-                } else {
-                    alert(res3.data.detail)
-                }
-            } else {
-                alert(res2.data.detail)
-            }
-        } else {
-            alert(res.data.detail)
+
+        setFlowID(res.data.flowID)
+        return {
+            status: res.data.status,
+            detail: res.data.detail,
+            flowID: res.data.flowID
         }
-        //console.log(sd + " : " + ed)
     }
+
+    const createApproval = async (flowID) => {
+        let st = "";
+        let res = await axios.post(flow + "approval/create", {
+            flowID: flowID,
+            approval: approval
+        })
+        st = res.data.status
+        return {
+            status: res.data.status,
+            detail: res.data.detail
+        }
+    }
+
+    const startFlow = async (flowID) => {
+        let st = "";
+        let res = await axios.post(flow + "flow/startflow", {
+            flowID: flowID
+        })
+        st = res.data.status
+        return {
+            status: res.data.status,
+            detail: res.data.detail
+        }
+    }
+
+    const getFlowStatus = async (flowID) => {
+        let res = await axios.get(flow + "flow/flow", {
+            params: {
+                status: 3,
+                flowID: flowID
+            }
+        })
+
+        return res.data[0]
+    }
+
+    const createCapexFlow = async (flowID, flowStatus) => {
+        let res = await axios.post(url + "capexflow/capexflow", {
+            flowID: flowID,
+            flowStatus: flowStatus
+        })
+
+        return res.data
+    }
+
+    const createCapexFlowDetail = async (capexID, capexFlowID) => {
+        let res = await axios.post(url + "capexFlowDetail/capexFlowDetail", {
+            capexID: capexID,
+            capexFlowID: capexFlowID
+        })
+        return res.data
+    }
+
+
 
 
 
